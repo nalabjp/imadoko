@@ -1,0 +1,2 @@
+# imadoko
+imadoko? kokodayo!
