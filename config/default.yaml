@@ -1,0 +1,20 @@
+device:
+  name: YOUR_DEVICE_NAME
+
+trello:
+  key: YOUR_API_KEY
+  token: YOUR_TOKEN
+  board:
+    name: YOUR_BOARD_NAME
+    list:
+      online: 自席
+      offline: 帰宅
+      away: 離席
+
+condition:
+  # away になるまでの時間（分）
+  time_until_away: 5
+  # business time 以外の away 状態からさらに time_until_away を過ぎると offline にする
+  business:
+    start: '9:00'
+    end: '22:00'
