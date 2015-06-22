@@ -17,6 +17,8 @@
 #### PC
 - MacBook Air (11-inch, Mid 2012)
     - Yosemite 10.10.3
+- MacBook Pro (Retina,  15-inch,  Mid 2014)
+    - Yosemite 10.10.3
 
 ## 準備
 ### チーム
