@@ -88,6 +88,9 @@ $ npm install
 $ npm start
 ```
 
+## sleep問題
+Macなら[nosleep](https://github.com/integralpro/nosleep)とかを使えばラップトップを閉じてもsleepに入らない
+
 ## 更新履歴
 [CHANGELOG](https://github.com/nalabjp/imadoko/blob/master/CHANGELOG.md)
 
