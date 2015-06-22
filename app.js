@@ -50,9 +50,10 @@ noble.on('discover', function(peripheral) {
   if (!trello.initialized || peripheral.advertisement.localName != config.device.name) return;
 
   Log.d('Found device with local name: ' + peripheral.advertisement.localName);
+
+  latest = Date.now();
   if (!online) {
     online = true;
-    latest = Date.now();
     trello.moveCard('online');
   }
 });
