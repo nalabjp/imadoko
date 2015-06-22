@@ -7,7 +7,7 @@
 ## 必要なコト
 - BLE(Bluetooh Low Energy)対応のiPhoneを持っている
     - Androidでも動くと思うけど（未確認）
-- BLE(Bluetooh Low Energy)対応で、node.jsが動くPCを持っている
+- BLE対応で、node.jsが動くPCを持っている
 
 ### 動作確認済み環境
 #### デバイス
