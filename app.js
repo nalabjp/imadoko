@@ -49,7 +49,7 @@ noble.on('stateChange', function(state) {
 noble.on('discover', function(peripheral) {
   if (!trello.initialized || peripheral.advertisement.localName != config.device.name) return;
 
-  Log.i('Found device with local name: ' + peripheral.advertisement.localName);
+  Log.d('Found device with local name: ' + peripheral.advertisement.localName);
   if (!online) {
     online = true;
     latest = Date.now();
