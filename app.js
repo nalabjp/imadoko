@@ -91,6 +91,6 @@ setInterval(function() {
 if (config.admin.force_reset.enable == true) {
   clock = config.admin.force_reset.clock.split(':');
   schedule.scheduleJob(clock[1] + ' ' + clock[0] + ' * * *', function(){
-    trello.moveAllCards('offline');
+    trello.moveAllCards(config.admin.force_reset.list);
   });
 }

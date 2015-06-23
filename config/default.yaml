@@ -23,3 +23,4 @@ admin:
   force_reset:
     enable: false
     clock: '06:00'
+    list: offline
