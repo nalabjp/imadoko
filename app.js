@@ -1,3 +1,5 @@
+process.env.TZ = 'Asia/Tokyo';
+
 /*
  * requires
  */
@@ -5,6 +7,7 @@ var noble = require('noble');
 var config = require('config');
 var Log = require('./lib/log.js');
 var Trello = require('./lib/trello.js');
+var schedule = require('node-schedule');
 
 var trello = new Trello(config.trello);
 var online = false;
@@ -22,7 +25,6 @@ endClock = config.condition.business.end.split(':');
 businessEnd = new Date();
 businessEnd.setHours(endClock[0], endClock[1], 0);
 const BUSINESS_END = businessEnd.getTime();
-
 
 Log.i('imadoko start');
 
@@ -54,7 +56,7 @@ noble.on('discover', function(peripheral) {
   latest = Date.now();
   if (!online) {
     online = true;
-    trello.moveCard('online');
+    trello.moveMyCard('online');
   }
 });
 
@@ -67,7 +69,7 @@ var whereNow = function() {
       // away
       online = false;
       latest = now;
-      trello.moveCard('away');
+      trello.moveMyCard('away');
     }
   } else {
     if (latest == null) return;
@@ -76,7 +78,7 @@ var whereNow = function() {
         // offline
         online = false;
         latest = null;
-        trello.moveCard('offline');
+        trello.moveMyCard('offline');
       }
     }
   }
@@ -85,3 +87,10 @@ var whereNow = function() {
 setInterval(function() {
   whereNow();
 }, INTERVAL);
+
+if (config.admin.force_reset.enable == true) {
+  clock = config.admin.force_reset.clock.split(':');
+  schedule.scheduleJob(clock[1] + ' ' + clock[0] + ' * * *', function(){
+    trello.moveAllCards(config.admin.force_reset.list);
+  });
+}
