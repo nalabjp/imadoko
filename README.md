@@ -49,8 +49,9 @@ $ git clone https://github.com/nalabjp/imadoko.git
 $ cd imadoko
 ```
 
-`config/default.yaml`を編集する。もちろんvimでなくても良い。
+`config/default.yaml.samle`をコピーして編集する。もちろんvimでなくても良い。
 ```
+$ cp config/default.yaml.sample config/default.yaml
 $ vim config/default.yaml
 ```
 
