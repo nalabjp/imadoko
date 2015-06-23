@@ -76,6 +76,12 @@ condition:
   business:
     start: '9:00'
     end: '22:00'
+
+admin:
+  force_reset:
+    enable: false
+    clock: '06:00'
+    list: offline
 ```
 
 npm install!!
