@@ -15,7 +15,6 @@ var latest = null;
 const SERVCE_UUIDS = [];
 const REPEAT_SCAN = true;
 const AWAY_DURATION = config.condition.time_until_away * 60 * 1000; // minutes
-const INTERVAL = 30 * 1000; // 30 sec
 startClock = config.condition.business.start.split(':');
 businessStart = new Date();
 businessStart.setHours(startClock[0], startClock[1], 0);
@@ -84,13 +83,13 @@ var whereNow = function() {
   }
 };
 
-setInterval(function() {
+schedule.scheduleJob('*/1 * * * *', function() {
   whereNow();
-}, INTERVAL);
+});
 
 if (config.admin.force_reset.enable == true) {
   clock = config.admin.force_reset.clock.split(':');
-  schedule.scheduleJob(clock[1] + ' ' + clock[0] + ' * * *', function(){
+  schedule.scheduleJob(clock[1] + ' ' + clock[0] + ' * * *', function() {
     trello.moveAllCards(config.admin.force_reset.list);
   });
 }
