@@ -5,25 +5,16 @@ process.env.TZ = 'Asia/Tokyo';
  */
 var noble = require('noble');
 var config = require('config');
+var schedule = require('node-schedule');
 var Log = require('./lib/log.js');
 var Trello = require('./lib/trello.js');
-var schedule = require('node-schedule');
+var Watcher = require('./lib/watcher.js');
 
 var trello = new Trello(config.trello);
-var online = false;
-var latest = null;
+var watcher = new Watcher();
+
 const SERVCE_UUIDS = [];
 const REPEAT_SCAN = true;
-const AWAY_DURATION = config.condition.time_until_away * 60 * 1000; // minutes
-startClock = config.condition.business.start.split(':');
-businessStart = new Date();
-businessStart.setHours(startClock[0], startClock[1], 0);
-const BUSINESS_START = businessStart.getTime();
-
-endClock = config.condition.business.end.split(':');
-businessEnd = new Date();
-businessEnd.setHours(endClock[0], endClock[1], 0);
-const BUSINESS_END = businessEnd.getTime();
 
 Log.i('imadoko start');
 
@@ -31,7 +22,7 @@ Log.i('imadoko start');
 Log.i('Trello data loading... ');
 trello.init();
 
-// noble 
+// noble
 Log.i('noble start... ');
 noble.on('stateChange', function(state) {
   if (state === 'poweredOn') {
@@ -53,38 +44,21 @@ noble.on('discover', function(peripheral) {
   Log.d('Found device with local name: ' + peripheral.advertisement.localName);
 
   latest = Date.now();
-  if (!online) {
-    online = true;
+  if (!watcher.online) {
+    watcher.online = true;
     trello.moveMyCard('online');
   }
 });
 
-// Watcher
-var whereNow = function() {
-  Log.d('Where now?');
-  now = Date.now();
-  if (online) {
-    if ((now - latest) > AWAY_DURATION) {
-      // away
-      online = false;
-      latest = now;
-      trello.moveMyCard('away');
-    }
-  } else {
-    if (latest == null) return;
-    if ((now < BUSINESS_START) || (BUSINESS_END < now)) {
-      if ((now - latest) > AWAY_DURATION) {
-        // offline
-        online = false;
-        latest = null;
-        trello.moveMyCard('offline');
-      }
-    }
-  }
-};
-
 schedule.scheduleJob('*/1 * * * *', function() {
-  whereNow();
+  watcher.whereNow(
+    function() {
+      trello.moveMyCard('away');
+    },
+    function() {
+      trello.moveMyCard('offline');
+    }
+  );
 });
 
 if (config.admin.force_reset.enable == true) {
