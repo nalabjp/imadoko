@@ -1,3 +1,7 @@
+## 0.2.1 (2015-07-05)
+
+- Fix bug
+
 ## 0.2.0 (2015-06-24)
 
 - Support force reset for admin feature
