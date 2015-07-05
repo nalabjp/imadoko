@@ -8,10 +8,10 @@ var config = require('config');
 var schedule = require('node-schedule');
 var Log = require('./lib/log.js');
 var Trello = require('./lib/trello.js');
-var Watcher = require('./lib/watcher.js');
+var State = require('./lib/state.js');
 
 var trello = new Trello(config.trello);
-var watcher = new Watcher();
+var state = new State();
 
 const SERVCE_UUIDS = [];
 const REPEAT_SCAN = true;
@@ -43,15 +43,13 @@ noble.on('discover', function(peripheral) {
 
   Log.d('Found device with local name: ' + peripheral.advertisement.localName);
 
-  latest = Date.now();
-  if (!watcher.online) {
-    watcher.online = true;
+  state.toOnline(function() {
     trello.moveMyCard('online');
-  }
+  })
 });
 
 schedule.scheduleJob('*/1 * * * *', function() {
-  watcher.whereNow(
+  state.check(
     function() {
       trello.moveMyCard('away');
     },
